@@ -1,0 +1,13 @@
+$bgcolor: 	#2c2d2f;
+$txtcolor:	#D3D2D0;
+
+body {
+	background: $bgcolor url(../images/bgtile.jpg);
+	color: $txtcolor;
+	text-align: center;
+}
+
+h1.title {
+	margin: 0 auto;
+	max-width: 680px;
+}

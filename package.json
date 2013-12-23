@@ -1,0 +1,21 @@
+{
+  "name": "binaural",
+  "version": "0.0.1",
+  "description": "A demonstration of the Binaural Beats phenomenom using the HTML 5 Web Audio API",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "Audio"
+  ],
+  "author": "@martindownton",
+  "license": "BSD-2-Clause",
+  "devDependencies": {
+    "grunt": "~0.4.1",
+    "grunt-contrib-uglify": "~0.2.5",
+    "grunt-contrib-sass": "~0.5.0",
+    "grunt-contrib-coffee": "~0.7.0",
+    "grunt-contrib-watch": "~0.5.3"
+  }
+}

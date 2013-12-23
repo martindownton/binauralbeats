@@ -1,0 +1,10 @@
+body {
+  background: #2c2d2f url(../images/bgtile.jpg);
+  color: #d3d2d0;
+  text-align: center;
+}
+
+h1.title {
+  margin: 0 auto;
+  max-width: 680px;
+}

@@ -1,10 +1,24 @@
 body {
   background: #2c2d2f url(../images/bgtile.jpg);
   color: #d3d2d0;
+  font-family: 'Open Sans', sans-serif;
   text-align: center;
 }
 
-h1.title {
+#title {
+  font-weight: normal;
   margin: 0 auto;
   max-width: 680px;
+}
+
+#compatibility {
+  color: #999999;
+}
+
+#compatibility.compatible {
+  color: #33cc33;
+}
+
+#compatibility.notcompatible {
+  color: #cc3333;
 }

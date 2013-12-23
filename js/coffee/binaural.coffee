@@ -26,4 +26,3 @@ binaural =
 
 $ () ->
 	binaural.init()
-	alert('supported')

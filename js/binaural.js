@@ -27,8 +27,7 @@
   };
 
   $(function() {
-    binaural.init();
-    return alert('supported');
+    return binaural.init();
   });
 
 }).call(this);

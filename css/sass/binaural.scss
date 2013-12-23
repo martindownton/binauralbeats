@@ -1,13 +1,24 @@
 $bgcolor: 	#2c2d2f;
 $txtcolor:	#D3D2D0;
+$grey:		#999999;
+$green:		#33CC33;
+$red:		#CC3333;
 
 body {
 	background: $bgcolor url(../images/bgtile.jpg);
 	color: $txtcolor;
+	font-family: 'Open Sans', sans-serif;
 	text-align: center;
 }
 
-h1.title {
+#title {
+	font-weight: normal;
 	margin: 0 auto;
 	max-width: 680px;
 }
+
+#compatibility {
+	color: $grey;
+}
+#compatibility.compatible		{ color:$green;	}
+#compatibility.notcompatible	{ color:$red;	}

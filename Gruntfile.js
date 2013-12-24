@@ -26,7 +26,10 @@ module.exports = function (grunt) {
 			},
 			styles: {
 				files: 'css/sass/**',
-				tasks: ['sass']
+				tasks: ['sass'],
+				options: {
+					livereload: true,
+				},
 			}
 		},
 	});

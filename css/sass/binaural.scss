@@ -1,6 +1,10 @@
+@import 'normalize';
+
 $bgcolor: 	#2c2d2f;
 $txtcolor:	#D3D2D0;
-$grey:		#999999;
+$freqcolor:	#999;
+$grey:		#999;
+$greydark:	#444;
 $green:		#33CC33;
 $red:		#CC3333;
 
@@ -20,5 +24,51 @@ body {
 #compatibility {
 	color: $grey;
 }
-#compatibility.compatible		{ color:$green;	}
-#compatibility.notcompatible	{ color:$red;	}
+#compatibility.compatible	{ color:$green;	}
+#compatibility.incompatible	{ color:$red;	}
+
+#interface {
+	background: rgba(0,0,0,0.2);
+}
+	.freq {
+		color: $freqcolor;
+		float: left;
+		font-size: 70px;
+		text-align: right;
+		width: 40%;
+	}
+	#freq_right { text-align:left; }
+	#ctl_startstop {
+		display: block;
+		float: left;
+		font-size: 70px;
+		height: 81px;
+		overflow: hidden;
+		position: relative;
+		width: 20%;
+
+		&:before {
+			color: $greydark;
+			content: "\f01d";
+			left: 0;
+			position: absolute;
+			width: 100%;
+			line-height: 81px;
+		}
+	}
+
+	#examples {
+		clear: both;
+		display: block;
+		padding: 10px 0;
+		text-align: center;
+
+		li {
+			display: inline-block;
+			font-size: 14px;
+			padding: 0 8px;
+		}
+		a {
+			color: $grey;
+		}
+	}

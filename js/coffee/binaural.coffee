@@ -1,6 +1,11 @@
+config =
+	freq_fundamental:	440
+	msg_compatible:		"Your Browser is Compatiable with the Webaudio API"
+	msg_incompatible:	"Your Browser is Not Compatiable with the Webaudio API"
+
 binaural =
-	fundamental:	440
-	obj_audio:	null
+	obj_audio:		null
+	obj_message:	null
 
 	init: () ->
 		try
@@ -13,15 +18,26 @@ binaural =
 			if !binaural.AudioContext
 				throw new Error("AudioContext not supported!")
 			else
-				binaural.create()
+				binaural.update_compatibility_message(config.msg_compatible, 'compatible')
+				binaural.swtup_audio()
 
 		catch exc
 			binaural.nosupport(exc)
 	
 	nosupport: (exc) ->
-		alert('No Support: ' + exc)
+		console.error('No Support: ' + exc)
+		binaural.update_compatibility_message(config.msg_incompatible, 'incompatible')
 
-	create: () ->
+	update_compatibility_message: (str_message, str_class) ->
+		binaural.obj_message = document.getElementById('compatibility')
+		console.log(binaural.obj_message)
+		binaural.obj_message.innerHTML = str_message
+		binaural.obj_message.className = str_class
+		$(binaural.obj_message).fadeTo(1500, 0.1, () ->
+			$(binaural.obj_message).slideUp('liniar')
+		)
+
+	swtup_audio: () ->
 		binaural.obj_audio = new binaural.AudioContext()
 
 $ () ->

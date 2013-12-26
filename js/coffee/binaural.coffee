@@ -6,6 +6,7 @@ config =
 binaural =
 	obj_audio:		null
 	obj_message:	null
+	int_volume:		null
 
 	init: () ->
 		try
@@ -18,17 +19,40 @@ binaural =
 			if !binaural.AudioContext
 				throw new Error("AudioContext not supported!")
 			else
-				binaural.update_compatibility_message(config.msg_compatible, 'compatible')
-				binaural.swtup_audio()
+				binaural.updateCompatibilityMessage(config.msg_compatible, 'compatible')
+				binaural.initEvents()
+				binaural.setupAudio()
 
 		catch exc
 			binaural.nosupport(exc)
+
+	initEvents: () ->
+		binaural.obj_volume = $('#volume')
+		binaural.int_volume_max = binaural.obj_volume.height();
+		binaural.obj_volume.find('.indicator')
+		.css(
+			height: 0
+			top: binaural.int_volume_max
+		)
+		.animate(
+			height: binaural.int_volume_max
+			top: 0
+		, 400)
+		binaural.obj_volume.click( (e) ->
+			int_offset 				= e.pageY - $(this).offset().top
+			int_height_less_offset 	= binaural.int_volume_max - int_offset
+			binaural.int_volume		= parseInt(int_height_less_offset / binaural.int_volume_max * 100)
+			binaural.obj_volume.find('.indicator').css(
+				height:	int_height_less_offset
+				top:	int_offset
+			)
+		)
 	
 	nosupport: (exc) ->
 		console.error('No Support: ' + exc)
-		binaural.update_compatibility_message(config.msg_incompatible, 'incompatible')
+		binaural.updateCompatibilityMessage(config.msg_incompatible, 'incompatible')
 
-	update_compatibility_message: (str_message, str_class) ->
+	updateCompatibilityMessage: (str_message, str_class) ->
 		binaural.obj_message = document.getElementById('compatibility')
 		console.log(binaural.obj_message)
 		binaural.obj_message.innerHTML = str_message
@@ -37,7 +61,7 @@ binaural =
 			$(binaural.obj_message).slideUp('liniar')
 		)
 
-	swtup_audio: () ->
+	setupAudio: () ->
 		binaural.obj_audio = new binaural.AudioContext()
 
 $ () ->

@@ -1,5 +1,6 @@
 @import 'normalize';
 
+$coltest: 	#FC0;
 $bgcolor: 	#2c2d2f;
 $txtcolor:	#D3D2D0;
 $freqcolor:	#999;
@@ -7,6 +8,9 @@ $grey:		#999;
 $greydark:	#444;
 $green:		#33CC33;
 $red:		#CC3333;
+
+$interface_height:	81px;
+$interface_extra:	38px;
 
 body {
 	background: $bgcolor url(../images/bgtile.jpg);
@@ -17,7 +21,7 @@ body {
 
 #title {
 	font-weight: normal;
-	margin: 0 auto;
+	margin: 10px auto;
 	max-width: 680px;
 }
 
@@ -29,15 +33,18 @@ body {
 
 #interface {
 	background: rgba(0,0,0,0.2);
+	height: auto;
+	position: relative;
 }
 	.freq {
 		color: $freqcolor;
 		float: left;
 		font-size: 70px;
+		margin: 0 0 0 2%;
 		text-align: right;
-		width: 40%;
+		width: 38%;
 	}
-	#freq_right { text-align:left; }
+	#freq_right { text-align:left; margin:0; }
 	#ctl_startstop {
 		display: block;
 		float: left;
@@ -56,10 +63,29 @@ body {
 			line-height: 81px;
 		}
 	}
+	@mixin volume-common() {
+		height: ($interface_height + $interface_extra);
+		margin: 0;
+	}
+	#volume {
+		@include volume-common();
+		max-width: 15px;
+		position: absolute;
+		right: 0;
+		top: 0;
+		width: 2%;
+	}
+	.indicator {
+		@include volume-common();
+		background: $greydark;
+		display: block;
+		position: relative;
+	}
 
 	#examples {
 		clear: both;
 		display: block;
+		margin: 0px;
 		padding: 10px 0;
 		text-align: center;
 

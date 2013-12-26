@@ -385,7 +385,7 @@ body {
 
 #title {
   font-weight: normal;
-  margin: 0 auto;
+  margin: 10px auto;
   max-width: 680px;
 }
 
@@ -403,18 +403,22 @@ body {
 
 #interface {
   background: rgba(0, 0, 0, 0.2);
+  height: auto;
+  position: relative;
 }
 
 .freq {
   color: #999999;
   float: left;
   font-size: 70px;
+  margin: 0 0 0 2%;
   text-align: right;
-  width: 40%;
+  width: 38%;
 }
 
 #freq_right {
   text-align: left;
+  margin: 0;
 }
 
 #ctl_startstop {
@@ -435,9 +439,28 @@ body {
   line-height: 81px;
 }
 
+#volume {
+  height: 119px;
+  margin: 0;
+  max-width: 15px;
+  position: absolute;
+  right: 0;
+  top: 0;
+  width: 2%;
+}
+
+.indicator {
+  height: 119px;
+  margin: 0;
+  background: #444444;
+  display: block;
+  position: relative;
+}
+
 #examples {
   clear: both;
   display: block;
+  margin: 0px;
   padding: 10px 0;
   text-align: center;
 }

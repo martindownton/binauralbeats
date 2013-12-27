@@ -38,15 +38,28 @@
         top: 0
       }, 400);
       return binaural.obj_volume.click(function(e) {
-        var int_height_less_offset, int_offset;
-        int_offset = e.pageY - $(this).offset().top;
-        int_height_less_offset = binaural.int_volume_max - int_offset;
-        binaural.int_volume = parseInt(int_height_less_offset / binaural.int_volume_max * 100);
-        return binaural.obj_volume.find('.indicator').css({
-          height: int_height_less_offset,
-          top: int_offset
-        });
+        return binaural.volumeSet($(this), e.pageY);
       });
+    },
+    volumeSet: function($volume, int_offset_y) {
+      var int_height_less_offset, int_offset, int_volume, int_volume_height, int_volume_offset;
+      int_offset = int_offset_y - $volume.offset().top;
+      int_height_less_offset = binaural.int_volume_max - int_offset;
+      int_volume = parseInt(int_height_less_offset / binaural.int_volume_max * 100);
+      if (int_volume > 95) {
+        int_volume = 100;
+      }
+      int_volume = int_volume - (int_volume % 5);
+      binaural.int_volume = int_volume;
+      int_volume_height = binaural.int_volume_max * int_volume / 100;
+      int_volume_offset = binaural.int_volume_max - int_volume_height;
+      return binaural.volumeRender(int_volume_offset, int_volume_height);
+    },
+    volumeRender: function(int_volume_offset, int_volume_height) {
+      return binaural.obj_volume.find('.indicator').animate({
+        height: int_volume_height,
+        top: int_volume_offset
+      }, 200);
     },
     nosupport: function(exc) {
       console.error('No Support: ' + exc);
@@ -54,7 +67,6 @@
     },
     updateCompatibilityMessage: function(str_message, str_class) {
       binaural.obj_message = document.getElementById('compatibility');
-      console.log(binaural.obj_message);
       binaural.obj_message.innerHTML = str_message;
       binaural.obj_message.className = str_class;
       return $(binaural.obj_message).fadeTo(1500, 0.1, function() {

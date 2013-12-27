@@ -27,9 +27,9 @@ BN =
 			BN.nosupport(exc)
 
 	initEvents: () ->
-		BN.obj_volume = $('#volume')
-		BN.int_volume_max = BN.obj_volume.height();
-		BN.obj_volume.find('.indicator')
+		BN.$volume = $('#volume')
+		BN.int_volume_max = BN.$volume.height();
+		BN.$volume.find('.indicator')
 		.css(
 			height: 0
 			top: BN.int_volume_max
@@ -38,7 +38,7 @@ BN =
 			height: BN.int_volume_max
 			top: 0
 		, 400)
-		BN.obj_volume.click( (e) ->
+		BN.$volume.click( (e) ->
 			BN.volumeSet($(this), e.pageY)
 		)
 
@@ -56,7 +56,8 @@ BN =
 			BN.volumeRender(int_volume_offset, int_volume_height)
 		
 	volumeRender: (int_volume_offset, int_volume_height) ->
-		BN.obj_volume.find('.indicator').animate(
+		console.log(BN.$volume)
+		BN.$volume.find('.indicator').animate(
 			height:	int_volume_height
 			top:	int_volume_offset
 		, 200)
@@ -75,6 +76,27 @@ BN =
 
 	setupAudio: () ->
 		BN.obj_audio = new BN.AudioContext()
+		BN.obj_volume = BN.obj_audio.createGain()
+		BN.obj_volume.connect(BN.obj_audio.destination)
+
+		sin = BN.obj_audio.createOscillator()
+		sin.type = 0
+
+		sound = {}
+		sound.source = sin
+		sound.volume = BN.obj_audio.createGain();
+		sound.source.connect(sound.volume);
+		sound.volume.connect(BN.obj_volume);
+
+		sound.source.noteOn(0)
+		sound.source.noteOff(1)
+
+		###
+		sound.source.loop = true
+		###
+		console.log('reached!')
+
+
 
 $ () ->
 	BN.init()

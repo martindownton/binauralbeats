@@ -3,78 +3,78 @@ config =
 	msg_compatible:		"Your Browser is Compatiable with the Webaudio API"
 	msg_incompatible:	"Your Browser is Not Compatiable with the Webaudio API"
 
-binaural =
+BN =
 	obj_audio:		null
 	obj_message:	null
 	int_volume:		null
 
 	init: () ->
 		try
-			binaural.AudioContext = (
+			BN.AudioContext = (
 				window.AudioContext ||
 				window.webkitAudioContext ||
 				null
 			);
 			
-			if !binaural.AudioContext
+			if !BN.AudioContext
 				throw new Error("AudioContext not supported!")
 			else
-				binaural.updateCompatibilityMessage(config.msg_compatible, 'compatible')
-				binaural.initEvents()
-				binaural.setupAudio()
+				BN.updateCompatibilityMessage(config.msg_compatible, 'compatible')
+				BN.initEvents()
+				BN.setupAudio()
 
 		catch exc
-			binaural.nosupport(exc)
+			BN.nosupport(exc)
 
 	initEvents: () ->
-		binaural.obj_volume = $('#volume')
-		binaural.int_volume_max = binaural.obj_volume.height();
-		binaural.obj_volume.find('.indicator')
+		BN.obj_volume = $('#volume')
+		BN.int_volume_max = BN.obj_volume.height();
+		BN.obj_volume.find('.indicator')
 		.css(
 			height: 0
-			top: binaural.int_volume_max
+			top: BN.int_volume_max
 		)
 		.animate(
-			height: binaural.int_volume_max
+			height: BN.int_volume_max
 			top: 0
 		, 400)
-		binaural.obj_volume.click( (e) ->
-			binaural.volumeSet($(this), e.pageY)
+		BN.obj_volume.click( (e) ->
+			BN.volumeSet($(this), e.pageY)
 		)
 
 	volumeSet: ($volume, int_offset_y) ->
 			int_offset 				= int_offset_y - $volume.offset().top
-			int_height_less_offset 	= binaural.int_volume_max - int_offset
-			int_volume				= parseInt(int_height_less_offset / binaural.int_volume_max * 100)
+			int_height_less_offset 	= BN.int_volume_max - int_offset
+			int_volume				= parseInt(int_height_less_offset / BN.int_volume_max * 100)
 			if (int_volume > 95)
 				int_volume = 100
 			int_volume = int_volume - (int_volume % 5)
-			binaural.int_volume = int_volume
+			BN.int_volume = int_volume
 
-			int_volume_height = binaural.int_volume_max * int_volume / 100
-			int_volume_offset = binaural.int_volume_max - int_volume_height
-			binaural.volumeRender(int_volume_offset, int_volume_height)
+			int_volume_height = BN.int_volume_max * int_volume / 100
+			int_volume_offset = BN.int_volume_max - int_volume_height
+			BN.volumeRender(int_volume_offset, int_volume_height)
 		
 	volumeRender: (int_volume_offset, int_volume_height) ->
-		binaural.obj_volume.find('.indicator').animate(
+		BN.obj_volume.find('.indicator').animate(
 			height:	int_volume_height
 			top:	int_volume_offset
 		, 200)
 
 	nosupport: (exc) ->
 		console.error('No Support: ' + exc)
-		binaural.updateCompatibilityMessage(config.msg_incompatible, 'incompatible')
+		BN.updateCompatibilityMessage(config.msg_incompatible, 'incompatible')
 
 	updateCompatibilityMessage: (str_message, str_class) ->
-		binaural.obj_message = document.getElementById('compatibility')
-		binaural.obj_message.innerHTML = str_message
-		binaural.obj_message.className = str_class
-		$(binaural.obj_message).fadeTo(1500, 0.1, () ->
-			$(binaural.obj_message).slideUp('liniar')
+		BN.obj_message = document.getElementById('compatibility')
+		BN.obj_message.innerHTML = str_message
+		BN.obj_message.className = str_class
+		$(BN.obj_message).fadeTo(1500, 0.1, () ->
+			$(BN.obj_message).slideUp('liniar')
 		)
 
 	setupAudio: () ->
-		binaural.obj_audio = new binaural.AudioContext()
+		BN.obj_audio = new BN.AudioContext()
 
 $ () ->
-	binaural.init()
+	BN.init()

@@ -21,12 +21,17 @@ body {
 
 #title {
 	font-weight: normal;
-	margin: 10px auto;
+	margin: 30px auto 10px;
 	max-width: 680px;
 }
 
 #compatibility {
 	color: $grey;
+	line-height: 36px;
+	margin: 0;
+	position: absolute;
+	top: 0;
+	width: 100%;
 }
 #compatibility.compatible	{ color:$green;	}
 #compatibility.incompatible	{ color:$red;	}
@@ -61,6 +66,9 @@ body {
 			position: absolute;
 			width: 100%;
 			line-height: 81px;
+		}
+		&.enabled:before {
+			content: "\f04d"
 		}
 	}
 	@mixin volume-common() {

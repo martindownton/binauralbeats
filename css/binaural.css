@@ -385,12 +385,17 @@ body {
 
 #title {
   font-weight: normal;
-  margin: 10px auto;
+  margin: 30px auto 10px;
   max-width: 680px;
 }
 
 #compatibility {
   color: #999999;
+  line-height: 36px;
+  margin: 0;
+  position: absolute;
+  top: 0;
+  width: 100%;
 }
 
 #compatibility.compatible {
@@ -437,6 +442,9 @@ body {
   position: absolute;
   width: 100%;
   line-height: 81px;
+}
+#ctl_startstop.enabled:before {
+  content: "\f04d";
 }
 
 #volume {

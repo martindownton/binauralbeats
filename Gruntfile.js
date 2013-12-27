@@ -22,7 +22,10 @@ module.exports = function (grunt) {
 		watch: {
 			scripts: {
 				files: 'js/coffee/**',
-				tasks: ['coffee']
+				tasks: ['coffee'],
+				options: {
+					livereload: true,
+				},
 			},
 			styles: {
 				files: 'css/sass/**',

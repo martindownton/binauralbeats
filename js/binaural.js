@@ -3,6 +3,7 @@
 
   config = {
     freq_fundamental: 440,
+    freq_init_variance: 2,
     msg_compatible: "Your Browser is Compatiable with the Webaudio API",
     msg_incompatible: "Your Browser is Not Compatiable with the Webaudio API"
   };
@@ -11,6 +12,14 @@
     obj_audio: null,
     obj_message: null,
     int_volume: null,
+    startstop: {
+      $el: null,
+      state: false,
+      state_class: 'enabled'
+    },
+    preset: {
+      $container: null
+    },
     init: function() {
       var exc;
       try {
@@ -18,7 +27,7 @@
         if (!BN.AudioContext) {
           throw new Error("AudioContext not supported!");
         } else {
-          BN.updateCompatibilityMessage(config.msg_compatible, 'compatible');
+          BN.updateCompatibilityMessage(config.msg_compatible, 'compatible', true);
           BN.initEvents();
           return BN.setupAudio();
         }
@@ -27,6 +36,22 @@
         return BN.nosupport(exc);
       }
     },
+    nosupport: function(exc) {
+      console.error('No Support: ' + exc);
+      return BN.updateCompatibilityMessage(config.msg_incompatible, 'incompatible');
+    },
+    updateCompatibilityMessage: function(str_message, str_class, bol_hide) {
+      BN.obj_message = document.getElementById('compatibility');
+      BN.obj_message.innerHTML = str_message;
+      BN.obj_message.className = str_class;
+      if (bol_hide) {
+        return $(BN.obj_message).fadeTo(1500, 0.1, function() {
+          return $(BN.obj_message).slideUp('liniar');
+        });
+      }
+    },
+    /* Interface*/
+
     initEvents: function() {
       BN.$volume = $('#volume');
       BN.int_volume_max = BN.$volume.height();
@@ -37,8 +62,16 @@
         height: BN.int_volume_max,
         top: 0
       }, 400);
-      return BN.$volume.click(function(e) {
+      BN.$volume.click(function(e) {
         return BN.volumeSet($(this), e.pageY);
+      });
+      BN.startstop.$el = $('#ctl_startstop');
+      BN.startstop.$el.click(function(e) {
+        return BN.startstopCTL();
+      });
+      BN.preset.$container = $('#examples');
+      return BN.preset.$container.find('li a').click(function(e) {
+        return BN.presetCTL();
       });
     },
     volumeSet: function($volume, int_offset_y) {
@@ -62,24 +95,26 @@
         top: int_volume_offset
       }, 200);
     },
-    nosupport: function(exc) {
-      console.error('No Support: ' + exc);
-      return BN.updateCompatibilityMessage(config.msg_incompatible, 'incompatible');
+    startstopCTL: function() {
+      if (BN.startstop.$el.toggleClass('enabled').hasClass('enabled')) {
+        return console.log('on');
+      } else {
+        return console.log('off');
+      }
     },
-    updateCompatibilityMessage: function(str_message, str_class) {
-      BN.obj_message = document.getElementById('compatibility');
-      BN.obj_message.innerHTML = str_message;
-      BN.obj_message.className = str_class;
-      return $(BN.obj_message).fadeTo(1500, 0.1, function() {
-        return $(BN.obj_message).slideUp('liniar');
-      });
+    presetCTL: function() {
+      return console.log('presetClick');
     },
+    /* Audio Context*/
+
     setupAudio: function() {
       var sin, sound;
       BN.obj_audio = new BN.AudioContext();
       BN.obj_volume = BN.obj_audio.createGain();
       BN.obj_volume.connect(BN.obj_audio.destination);
       sin = BN.obj_audio.createOscillator();
+      sin.frequency.value = config.freq_fundamental;
+      sin.frequency.value = config.freq_fundamental + config.freq_init_variance;
       sin.type = 0;
       sound = {};
       sound.source = sin;

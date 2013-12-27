@@ -12,6 +12,7 @@
     obj_audio: null,
     obj_message: null,
     int_volume: null,
+    AC: {},
     startstop: {
       $el: null,
       state: false,
@@ -107,27 +108,48 @@
     },
     /* Audio Context*/
 
-    setupAudio: function() {
+    demoAudio: function(int_freq, int_delay) {
       var sin, sound;
       BN.obj_audio = new BN.AudioContext();
       BN.obj_volume = BN.obj_audio.createGain();
       BN.obj_volume.connect(BN.obj_audio.destination);
       sin = BN.obj_audio.createOscillator();
-      sin.frequency.value = config.freq_fundamental;
-      sin.frequency.value = config.freq_fundamental + config.freq_init_variance;
+      sin.frequency.value = config.freq_fundamental + int_freq;
       sin.type = 0;
       sound = {};
       sound.source = sin;
       sound.volume = BN.obj_audio.createGain();
       sound.source.connect(sound.volume);
       sound.volume.connect(BN.obj_volume);
-      sound.source.noteOn(0);
-      sound.source.noteOff(1);
-      /*
-      		sound.source.loop = true
-      */
-
-      return console.log('reached!');
+      sound.source.noteOn(0 + int_delay);
+      sound.source.noteOff(0.2 + int_delay);
+      return console.log('Demo!');
+    },
+    setupAudio: function() {
+      BN.AC.left = BN.createSound();
+      BN.AC.right = BN.createSound();
+      BN.AC.left.source.noteOn(0);
+      BN.AC.left.source.noteOff(3);
+      BN.AC.right.source.frequency.value = 445;
+      BN.AC.right.source.noteOn(0);
+      return BN.AC.right.source.noteOff(3);
+    },
+    createSound: function() {
+      var audio, sin, volume;
+      audio = new BN.AudioContext();
+      volume = audio.createGain();
+      volume.connect(audio.destination);
+      sin = BN.createWave(audio);
+      audio.source = sin;
+      audio.source.connect(volume);
+      return audio;
+    },
+    createWave: function(audio) {
+      var sin;
+      sin = audio.createOscillator();
+      sin.type = 0;
+      sin.frequency.value = config.freq_fundamental;
+      return sin;
     }
   };
 

@@ -9,6 +9,7 @@
   };
 
   BN = {
+    $title: null,
     obj_audio: null,
     obj_message: null,
     int_volume: null,
@@ -29,6 +30,7 @@
           throw new Error("AudioContext not supported!");
         } else {
           BN.updateCompatibilityMessage(config.msg_compatible, 'compatible', true);
+          BN.initInterface();
           BN.initEvents();
           return BN.setupAudio();
         }
@@ -53,15 +55,29 @@
     },
     /* Interface*/
 
+    initInterface: function() {
+      BN.$title = $('#title');
+      return jQuery('<a/>', {
+        href: '#ctl_close',
+        title: 'Hide Description',
+        text: 'X'
+      }).appendTo(BN.$title);
+    },
     initEvents: function() {
+      BN.$title.find('a').click(function(e) {
+        return BN.$title.addClass('truncated').animate({
+          width: 235,
+          height: 37
+        }, 400);
+      });
       BN.$volume = $('#volume');
       BN.int_volume_max = BN.$volume.height();
       BN.$volume.find('.indicator').css({
         height: 0,
         top: BN.int_volume_max
       }).animate({
-        height: BN.int_volume_max,
-        top: 0
+        height: BN.int_volume_max * 0.8,
+        top: BN.int_volume_max * 0.2
       }, 400);
       BN.$volume.click(function(e) {
         return BN.volumeSet($(this), e.pageY);
@@ -83,7 +99,7 @@
       if (int_volume > 95) {
         int_volume = 100;
       }
-      int_volume = int_volume - (int_volume % 5);
+      int_volume = 5 * Math.round(int_volume / 5);
       BN.int_volume = int_volume;
       int_volume_height = BN.int_volume_max * int_volume / 100;
       int_volume_offset = BN.int_volume_max - int_volume_height;
@@ -127,14 +143,14 @@
     },
     setupAudio: function() {
       BN.AC.left = BN.createSound();
-      BN.AC.right = BN.createSound();
+      BN.AC.right = BN.createSound(true);
       BN.AC.left.source.noteOn(0);
       BN.AC.left.source.noteOff(3);
       BN.AC.right.source.frequency.value = 445;
       BN.AC.right.source.noteOn(0);
       return BN.AC.right.source.noteOff(3);
     },
-    createSound: function() {
+    createSound: function(bol_right) {
       var audio, sin, volume;
       audio = new BN.AudioContext();
       volume = audio.createGain();

@@ -23,6 +23,18 @@ body {
 	font-weight: normal;
 	margin: 30px auto 10px;
 	max-width: 680px;
+	overflow: hidden;
+	position: relative;
+
+	a {
+		color: $greydark;
+		content: 'x';
+		font-size: 14px;
+		position: absolute;
+		right: 10px;
+		bottom: 10px;
+	}
+	&.truncated a { display:none }
 }
 
 #compatibility {

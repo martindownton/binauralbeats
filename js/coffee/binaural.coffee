@@ -6,6 +6,7 @@ config =
 	msg_incompatible:	"Your Browser is Not Compatiable with the Webaudio API"
 
 BN =
+	$title:		null
 	obj_audio:		null	# Dep?
 	obj_message:	null
 	int_volume:		null
@@ -33,6 +34,7 @@ BN =
 				BN.updateCompatibilityMessage(config.msg_compatible, 'compatible', true)
 				#BN.demoAudio(0, 0)
 				#BN.demoAudio(220, 0.2)
+				BN.initInterface()
 				BN.initEvents()
 				BN.setupAudio()
 
@@ -54,7 +56,25 @@ BN =
 
 	### Interface ###
 	
+	initInterface: () ->
+		BN.$title = $('#title')
+		jQuery('<a/>', {
+			href: '#ctl_close',
+			title: 'Hide Description',
+			text: 'X'
+		}).appendTo(BN.$title);
+
 	initEvents: () ->
+		#CTL Close
+		BN.$title.find('a').click( (e) ->
+			BN.$title
+			.addClass('truncated')
+			.animate(
+				width: 235
+				height: 37
+			, 400)
+		)
+
 		#CTL Volume
 		BN.$volume = $('#volume')
 		BN.int_volume_max = BN.$volume.height();
@@ -64,8 +84,8 @@ BN =
 			top: BN.int_volume_max
 		)
 		.animate(
-			height: BN.int_volume_max
-			top: 0
+			height: BN.int_volume_max * 0.8
+			top: BN.int_volume_max * 0.2
 		, 400)
 		BN.$volume.click( (e) ->
 			BN.volumeSet($(this), e.pageY)
@@ -90,7 +110,7 @@ BN =
 			int_volume				= parseInt(int_height_less_offset / BN.int_volume_max * 100)
 			if (int_volume > 95)
 				int_volume = 100
-			int_volume = int_volume - (int_volume % 5)
+			int_volume = 5 * Math.round(int_volume / 5)
 			BN.int_volume = int_volume
 
 			int_volume_height = BN.int_volume_max * int_volume / 100
@@ -138,22 +158,29 @@ BN =
 
 	setupAudio: () ->
 		BN.AC.left = BN.createSound()
-		BN.AC.right = BN.createSound()
+		BN.AC.right = BN.createSound(true)
 
+		#BN.AC.left.volume.gain.value = 0.1
 		BN.AC.left.source.noteOn(0)
 		BN.AC.left.source.noteOff(3)
 
+		#BN.AC.right.volume.gain.value = 0.1
 		BN.AC.right.source.frequency.value = 445
 		BN.AC.right.source.noteOn(0)
 		BN.AC.right.source.noteOff(3)
 
-	createSound: () ->
+	createSound: (bol_right) ->
 		audio = new BN.AudioContext()
 		volume = audio.createGain()
+		#volume.gain = 0
 		volume.connect(audio.destination)
 
 		sin = BN.createWave(audio)
 		audio.source = sin
+
+		#pan = audio.createPanner()
+		#volume.connect(pan)
+
 		audio.source.connect(volume)
 
 		return audio

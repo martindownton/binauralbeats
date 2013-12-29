@@ -4,6 +4,7 @@
   config = {
     freq_fundamental: 440,
     freq_init_variance: 2,
+    anim_time: 400,
     msg_compatible: "Your Browser is Compatiable with the Webaudio API",
     msg_incompatible: "Your Browser is Not Compatiable with the Webaudio API"
   };
@@ -66,9 +67,10 @@
     initEvents: function() {
       BN.$title.find('a').click(function(e) {
         return BN.$title.addClass('truncated').animate({
-          width: 235,
           height: 37
-        }, 400);
+        }, config.anim_time).animate({
+          width: 235
+        }, config.anim_time);
       });
       BN.$volume = $('#volume');
       BN.int_volume_max = BN.$volume.height();
@@ -78,7 +80,7 @@
       }).animate({
         height: BN.int_volume_max * 0.8,
         top: BN.int_volume_max * 0.2
-      }, 400);
+      }, config.anim_time);
       BN.$volume.click(function(e) {
         return BN.volumeSet($(this), e.pageY);
       });
@@ -110,7 +112,7 @@
       return BN.$volume.find('.indicator').animate({
         height: int_volume_height,
         top: int_volume_offset
-      }, 200);
+      }, config.anim_time);
     },
     startstopCTL: function() {
       if (BN.startstop.$el.toggleClass('enabled').hasClass('enabled')) {

@@ -1,120 +1,134 @@
+/*------------------------------------*\
+    $contents
+\*------------------------------------*/
+/**
+ * CONTENTS.............list of modules
+ * NORMALIZE............normalize.css library
+ * CONFIGURATION........via variables
+ */
+
+
+
+
+
+/*------------------------------------*\
+    $normalize
+\*------------------------------------*/
 @import 'normalize';
 
-$coltest: 	#FC0;
-$bgcolor: 	#2c2d2f;
-$txtcolor:	#D3D2D0;
-$freqcolor:	#999;
-$grey:		#999;
-$greydark:	#444;
-$green:		#33CC33;
-$red:		#CC3333;
-
-$interface_height:	81px;
-$interface_extra:	38px;
+/*------------------------------------*\
+    $configuration
+\*------------------------------------*/
+@import 'configuration';
 
 body {
-	background: $bgcolor url(../images/bgtile.jpg);
-	color: $txtcolor;
-	font-family: 'Open Sans', sans-serif;
-	text-align: center;
+    background: $bgcolor url(../images/bgtile.jpg);
+    color: $txtcolor;
+    font-family: 'Open Sans', sans-serif;
+    text-align: center;
 }
 
 #title {
-	font-weight: normal;
-	margin: 30px auto 10px;
-	max-width: 680px;
-	overflow: hidden;
-	position: relative;
+    font-weight: normal;
+    margin: 30px auto 10px;
+    max-width: 680px;
+    overflow: hidden;
+    position: relative;
 
-	a {
-		color: $greydark;
-		content: 'x';
-		font-size: 14px;
-		position: absolute;
-		right: 10px;
-		bottom: 10px;
-	}
-	&.truncated a { display:none }
+    a {
+        color: $greydark;
+        content: 'x';
+        font-size: 14px;
+        position: absolute;
+        right: 10px;
+        bottom: 10px;
+        text-decoration: none;
+    }
+    &.truncated a { display:none }
 }
 
 #compatibility {
-	color: $grey;
-	line-height: 36px;
-	margin: 0;
-	position: absolute;
-	top: 0;
-	width: 100%;
+    color: $grey;
+    line-height: 36px;
+    margin: 0;
+    position: absolute;
+    top: 0;
+    width: 100%;
 }
-#compatibility.compatible	{ color:$green;	}
-#compatibility.incompatible	{ color:$red;	}
+#compatibility.compatible   { color:$green; }
+#compatibility.incompatible { color:$red;   }
 
 #interface {
-	background: rgba(0,0,0,0.2);
-	height: auto;
-	position: relative;
+    background: rgba(0,0,0,0.2);
+    float: left;
+    height: auto;
+    position: relative;
+    width: 100%;
 }
-	.freq {
-		color: $freqcolor;
-		float: left;
-		font-size: 70px;
-		margin: 0 0 0 2%;
-		text-align: right;
-		width: 38%;
-	}
-	#freq_right { text-align:left; margin:0; }
-	#ctl_startstop {
-		display: block;
-		float: left;
-		font-size: 70px;
-		height: 81px;
-		overflow: hidden;
-		position: relative;
-		width: 20%;
+    .freq {
+        color: $freqcolor;
+        float: left;
+        font-size: 70px;
+        margin: 0 0 0 2%;
+        text-align: right;
+        width: 38%;
+    }
+    #freq_right { text-align:left; margin:0; }
+    #ctl_startstop {
+        display: block;
+        float: left;
+        font-size: 70px;
+        height: 81px;
+        overflow: hidden;
+        position: relative;
+        width: 20%;
 
-		&:before {
-			color: $greydark;
-			content: "\f01d";
-			left: 0;
-			position: absolute;
-			width: 100%;
-			line-height: 81px;
-		}
-		&.enabled:before {
-			content: "\f04d"
-		}
-	}
-	@mixin volume-common() {
-		height: ($interface_height + $interface_extra);
-		margin: 0;
-	}
-	#volume {
-		@include volume-common();
-		max-width: 15px;
-		position: absolute;
-		right: 0;
-		top: 0;
-		width: 2%;
-	}
-	.indicator {
-		@include volume-common();
-		background: $greydark;
-		display: block;
-		position: relative;
-	}
+        &:before {
+            color: $greydark;
+            content: "\f01d";
+            left: 0;
+            position: absolute;
+            width: 100%;
+            line-height: 81px;
+        }
+        &.enabled:before {
+            content: "\f04d"
+        }
+    }
+    @mixin volume-common() {
+        height: ($interface_height + $interface_extra);
+        margin: 0;
+    }
+    #volume {
+        @include volume-common();
+        background-image: url(../images/volume.png);
+        background-repeat: repeat-y;
+        float: right;
+        max-width: 15px;
+        position: relative;
+        width: 2%;
+    }
+    .indicator {
+        @include volume-common();
+        background: $greydark;
+        display: block;
+        position: relative;
+    }
 
-	#examples {
-		clear: both;
-		display: block;
-		margin: 0px;
-		padding: 10px 0;
-		text-align: center;
+    #examples {
+        display: block;
+        float: left;
+        margin: 0 0 0 2%;
+        padding: 10px 0;
+        text-align: center;
+        width: 96%;
 
-		li {
-			display: inline-block;
-			font-size: 14px;
-			padding: 0 8px;
-		}
-		a {
-			color: $grey;
-		}
-	}
+        li {
+            display: inline-block;
+            font-size: 14px;
+            padding: 0 8px;
+        }
+        a {
+            color: $grey;
+        }
+    }

@@ -2,6 +2,8 @@ config =
 	freq_fundamental:	440
 	freq_init_variance:	2
 
+	anim_time:			400
+
 	msg_compatible:		"Your Browser is Compatiable with the Webaudio API"
 	msg_incompatible:	"Your Browser is Not Compatiable with the Webaudio API"
 
@@ -70,9 +72,11 @@ BN =
 			BN.$title
 			.addClass('truncated')
 			.animate(
-				width: 235
 				height: 37
-			, 400)
+			, config.anim_time)
+			.animate(
+				width: 235
+			, config.anim_time)
 		)
 
 		#CTL Volume
@@ -86,7 +90,7 @@ BN =
 		.animate(
 			height: BN.int_volume_max * 0.8
 			top: BN.int_volume_max * 0.2
-		, 400)
+		, config.anim_time)
 		BN.$volume.click( (e) ->
 			BN.volumeSet($(this), e.pageY)
 		)
@@ -122,7 +126,7 @@ BN =
 		BN.$volume.find('.indicator').animate(
 			height:	int_volume_height
 			top:	int_volume_offset
-		, 200)
+		, config.anim_time)
 
 	startstopCTL: () ->
 		if (BN.startstop.$el.toggleClass('enabled').hasClass('enabled'))

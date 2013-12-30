@@ -67,6 +67,10 @@ body {
     max-width: 680px;
     overflow: hidden;
     position: relative;
+    &:target {
+        height: $title_trunc_height;
+        width: $title_trunc_width;
+    }
 
     a {
         color: $greydark;
@@ -77,6 +81,7 @@ body {
         bottom: 10px;
         text-decoration: none;
     }
+    &:target a,
     &.truncated a { display:none }
 }
 .title--fixer {

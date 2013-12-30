@@ -430,6 +430,10 @@ body {
   overflow: hidden;
   position: relative;
 }
+.title:target {
+  height: 37px;
+  width: 249px;
+}
 .title a {
   color: #444444;
   content: 'x';
@@ -439,7 +443,7 @@ body {
   bottom: 10px;
   text-decoration: none;
 }
-.title.truncated a {
+.title:target a, .title.truncated a {
   display: none;
 }
 

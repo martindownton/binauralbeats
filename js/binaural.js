@@ -59,7 +59,7 @@
     initInterface: function() {
       BN.$title = $('.title');
       return jQuery('<a/>', {
-        href: '#ctl_close',
+        href: '#title',
         title: 'Hide Description',
         text: 'X'
       }).appendTo(BN.$title);

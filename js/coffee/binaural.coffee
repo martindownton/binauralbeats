@@ -69,6 +69,7 @@ BN =
 	initEvents: () ->
 		#CTL Close
 		BN.$title.find('a').click( (e) ->
+			e.preventDefault()
 			BN.$title
 				.wrapInner('<span class="title--fixer" />')
 			BN.$titleFixer = $('.title--fixer')
@@ -103,7 +104,7 @@ BN =
 			top: BN.int_volume_max * 0.2
 		, config.anim_time)
 		BN.$volume.click( (e) ->
-			BN.volumeSet($(this), e.pageY)
+			BN.volumeEvent($(this), e.pageY)
 		)
 
 		#CTL StartStop
@@ -119,7 +120,7 @@ BN =
 		)
 
 
-	volumeSet: ($volume, int_offset_y) ->
+	volumeEvent: ($volume, int_offset_y) ->
 			int_offset 				= int_offset_y - $volume.offset().top
 			int_height_less_offset 	= BN.int_volume_max - int_offset
 			int_volume				= parseInt(int_height_less_offset / BN.int_volume_max * 100)
@@ -131,6 +132,7 @@ BN =
 			int_volume_height = BN.int_volume_max * int_volume / 100
 			int_volume_offset = BN.int_volume_max - int_volume_height
 			BN.volumeRender(int_volume_offset, int_volume_height)
+			BN.volumeSet()
 		
 	volumeRender: (int_volume_offset, int_volume_height) ->
 		console.log(BN.$volume)
@@ -177,26 +179,31 @@ BN =
 
 		#BN.AC.left.volume.gain.value = 0.1
 		BN.AC.left.source.noteOn(0)
-		BN.AC.left.source.noteOff(3)
+		BN.AC.left.source.noteOff(5)
 
 		#BN.AC.right.volume.gain.value = 0.1
-		BN.AC.right.source.frequency.value = 445
+		BN.AC.right.source.frequency.value = 442
 		BN.AC.right.source.noteOn(0)
-		BN.AC.right.source.noteOff(3)
+		BN.AC.right.source.noteOff(5)
 
 	createSound: (bol_right) ->
 		audio = new BN.AudioContext()
+		
 		volume = audio.createGain()
-		#volume.gain = 0
-		volume.connect(audio.destination)
+		volume.gain.value = 0.5
 
 		sin = BN.createWave(audio)
 		audio.source = sin
 
-		#pan = audio.createPanner()
-		#volume.connect(pan)
+		pan = audio.createPanner()
+		if (!bol_right)
+			pan.setPosition(-1, 0, 0)
+		else
+			pan.setPosition(1, 0, 0)
 
-		audio.source.connect(volume)
+		audio.source.connect(pan)
+		pan.connect(volume)
+		volume.connect(audio.destination)
 
 		return audio
 
@@ -206,6 +213,9 @@ BN =
 		sin.frequency.value = config.freq_fundamental
 
 		return sin
+
+	volumeSet: () ->
+		BN.int_volume # Set the BN.AC volume to this value
 
 $ () ->
 	BN.init()

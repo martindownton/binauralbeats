@@ -408,15 +408,17 @@ sub {
 }
 
 body {
-  background: #2c2d2f url(../images/bgtile.jpg);
+  background-color: #2c2d2f;
+  background-image: url(../images/bgtile.jpg);
   color: #d3d2d0;
   font-family: 'Open Sans', sans-serif;
   text-align: center;
 }
 
-/*------------------------------------*\
-    $configuration
-\*------------------------------------*/
+em {
+  border-bottom: 2px dotted #444;
+}
+
 /*------------------------------------*\
     $objects
 \*------------------------------------*/
@@ -429,10 +431,11 @@ body {
   max-width: 680px;
   overflow: hidden;
   position: relative;
-}
-.title:target {
-  height: 37px;
-  width: 249px;
+  /*&:target {
+      height: $title_trunc_height;
+      width: $title_trunc_width;
+  }*/
+  /* &:target a, */
 }
 .title a {
   color: #444444;
@@ -443,7 +446,7 @@ body {
   bottom: 10px;
   text-decoration: none;
 }
-.title:target a, .title.truncated a {
+.title.truncated a {
   display: none;
 }
 
@@ -469,7 +472,8 @@ body {
 }
 
 #interface {
-  background: rgba(0, 0, 0, 0.2);
+  background-color: rgba(0, 0, 0, 0.2);
+  /* background-image: url(../images/wave.png); */
   float: left;
   height: auto;
   position: relative;
@@ -545,4 +549,32 @@ body {
 }
 #examples a {
   color: #999999;
+}
+
+.content {
+  clear: both;
+  padding: 10px 20px;
+  text-align: left;
+}
+
+.instructions {
+  margin: 0 auto;
+  max-width: 680px;
+}
+.instructions ol {
+  padding: 0 0 0 100px;
+}
+.instructions li {
+  min-height: 90px;
+  padding: 10px 0 0;
+  position: relative;
+}
+.instructions li .fa:before {
+  color: #444444;
+  font-size: 70px;
+  left: -100px;
+  line-height: 70px;
+  top: 0;
+  position: absolute;
+  width: 100%;
 }

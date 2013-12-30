@@ -8,7 +8,7 @@ config =
 	msg_incompatible:	"Your Browser is Not Compatiable with the Webaudio API"
 
 BN =
-	$title:		null
+	$title:			null
 	obj_audio:		null	# Dep?
 	obj_message:	null
 	int_volume:		null
@@ -70,13 +70,24 @@ BN =
 		#CTL Close
 		BN.$title.find('a').click( (e) ->
 			BN.$title
-			.addClass('truncated')
-			.animate(
-				height: 37
-			, config.anim_time)
-			.animate(
-				width: 235
-			, config.anim_time)
+				.wrapInner('<span class="title--fixer" />')
+			BN.$titleFixer = $('.title--fixer')
+			BN.$titleFixer
+				.css({
+					height:	BN.$titleFixer.height()
+					width:	BN.$titleFixer.width()
+				})
+			BN.$title
+				.addClass('truncated')
+				.animate(
+					height: 37
+					width: 249
+				, config.anim_time)
+			###
+				.animate(
+					paddingRight: 0
+				, config.anim_time)
+			###
 		)
 
 		#CTL Volume

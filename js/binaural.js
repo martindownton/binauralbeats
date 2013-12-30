@@ -66,11 +66,22 @@
     },
     initEvents: function() {
       BN.$title.find('a').click(function(e) {
+        BN.$title.wrapInner('<span class="title--fixer" />');
+        BN.$titleFixer = $('.title--fixer');
+        BN.$titleFixer.css({
+          height: BN.$titleFixer.height(),
+          width: BN.$titleFixer.width()
+        });
         return BN.$title.addClass('truncated').animate({
-          height: 37
-        }, config.anim_time).animate({
-          width: 235
+          height: 37,
+          width: 249
         }, config.anim_time);
+        /*
+        				.animate(
+        					paddingRight: 0
+        				, config.anim_time)
+        */
+
       });
       BN.$volume = $('#volume');
       BN.int_volume_max = BN.$volume.height();

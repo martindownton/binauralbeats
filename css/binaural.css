@@ -5,6 +5,9 @@
  * CONTENTS.............list of modules
  * NORMALIZE............normalize.css library
  * CONFIGURATION........via variables
+ * ELEMENTS.............unclassed items
+ * OBJECTS..............generic and reusable declerations
+ * COMPONENTS...........implementations and specific styling
  */
 /*------------------------------------*\
     $normalize
@@ -387,6 +390,12 @@ table {
   border-spacing: 0;
 }
 
+/*------------------------------------*\
+    $configuration
+\*------------------------------------*/
+/*------------------------------------*\
+    $elements
+\*------------------------------------*/
 sup, sub {
   vertical-align: baseline;
   position: relative;
@@ -398,9 +407,6 @@ sub {
   top: 1.2em;
 }
 
-/*------------------------------------*\
-    $configuration
-\*------------------------------------*/
 body {
   background: #2c2d2f url(../images/bgtile.jpg);
   color: #d3d2d0;
@@ -408,6 +414,15 @@ body {
   text-align: center;
 }
 
+/*------------------------------------*\
+    $configuration
+\*------------------------------------*/
+/*------------------------------------*\
+    $objects
+\*------------------------------------*/
+/*------------------------------------*\
+    $components
+\*------------------------------------*/
 .title {
   font-weight: normal;
   margin: 30px auto 10px;
@@ -426,6 +441,10 @@ body {
 }
 .title.truncated a {
   display: none;
+}
+
+.title--fixer {
+  display: block;
 }
 
 #compatibility {

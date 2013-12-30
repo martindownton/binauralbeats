@@ -5,6 +5,9 @@
  * CONTENTS.............list of modules
  * NORMALIZE............normalize.css library
  * CONFIGURATION........via variables
+ * ELEMENTS.............unclassed items
+ * OBJECTS..............generic and reusable declerations
+ * COMPONENTS...........implementations and specific styling
  */
 
 
@@ -15,19 +18,48 @@
     $normalize
 \*------------------------------------*/
 @import 'normalize';
-@import 'generalisation';
 
 /*------------------------------------*\
     $configuration
 \*------------------------------------*/
 @import 'configuration';
 
+/*------------------------------------*\
+    $elements
+\*------------------------------------*/
+
+@import 'generalisation';
 body {
     background: $bgcolor url(../images/bgtile.jpg);
     color: $txtcolor;
     font-family: 'Open Sans', sans-serif;
     text-align: center;
 }
+
+
+
+
+
+/*------------------------------------*\
+    $configuration
+\*------------------------------------*/
+
+/*------------------------------------*\
+    $objects
+\*------------------------------------*/
+
+@mixin volume-common() {
+    height: ($interface_height + $interface_extra);
+    margin: 0;
+}
+
+
+
+
+
+/*------------------------------------*\
+    $components
+\*------------------------------------*/
 
 .title {
     font-weight: normal;
@@ -46,6 +78,9 @@ body {
         text-decoration: none;
     }
     &.truncated a { display:none }
+}
+.title--fixer {
+    display: block;
 }
 
 #compatibility {
@@ -95,10 +130,6 @@ body {
         &.enabled:before {
             content: "\f04d"
         }
-    }
-    @mixin volume-common() {
-        height: ($interface_height + $interface_extra);
-        margin: 0;
     }
     #volume {
         @include volume-common();

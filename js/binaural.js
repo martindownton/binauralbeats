@@ -57,7 +57,7 @@
     /* Interface*/
 
     initInterface: function() {
-      BN.$title = $('#title');
+      BN.$title = $('.title');
       return jQuery('<a/>', {
         href: '#ctl_close',
         title: 'Hide Description',

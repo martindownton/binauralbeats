@@ -387,6 +387,17 @@ table {
   border-spacing: 0;
 }
 
+sup, sub {
+  vertical-align: baseline;
+  position: relative;
+  top: -1.2em;
+  font-size: 0.4em;
+}
+
+sub {
+  top: 1.2em;
+}
+
 /*------------------------------------*\
     $configuration
 \*------------------------------------*/
@@ -397,14 +408,14 @@ body {
   text-align: center;
 }
 
-#title {
+.title {
   font-weight: normal;
   margin: 30px auto 10px;
   max-width: 680px;
   overflow: hidden;
   position: relative;
 }
-#title a {
+.title a {
   color: #444444;
   content: 'x';
   font-size: 14px;
@@ -413,7 +424,7 @@ body {
   bottom: 10px;
   text-decoration: none;
 }
-#title.truncated a {
+.title.truncated a {
   display: none;
 }
 

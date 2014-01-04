@@ -171,10 +171,17 @@ BN =
 		console.log('Demo!')
 
 	setupAudio: () ->
-		BN.AC.left = BN.createSound()
-		BN.AC.right = BN.createSound(true)
+		console.log(BN.AC.left)
+		if (BN.AC.left == undefined)
+			console.log('match')
+			BN.AC.left = new BN.AudioContext()
+			BN.AC.right = new BN.AudioContext()
+
+		BN.createSound(BN.AC.left)
+		BN.createSound(BN.AC.right, true)
 
 		#BN.AC.left.volume.gain.value = 0.1
+		BN.AC.volume.gain.value = 0.1
 
 		#BN.AC.right.volume.gain.value = 0.1
 		BN.AC.right.source.frequency.value = 442
@@ -186,15 +193,14 @@ BN =
 			BN.AC.right.source.noteOn(0)
 		else
 			BN.AC.left.source.noteOff(0)
-			BN.AC.left = null
-			BN.AC.right.source.noteOff(0)
-			BN.AC.right = null
+			BN.AC.left.source.disconnect()
 
-	createSound: (bol_right) ->
-		audio = new BN.AudioContext()
-		
-		volume = audio.createGain()
-		volume.gain.value = 0.5
+			BN.AC.right.source.noteOff(0)
+			BN.AC.right.source.disconnect()
+
+	createSound: (audio, bol_right) ->
+		BN.AC.volume = audio.createGain()
+		BN.AC.volume.gain.value = 0.5
 
 		sin = BN.createWave(audio)
 		audio.source = sin
@@ -203,13 +209,11 @@ BN =
 		if (!bol_right)
 			pan.setPosition(-1, 0, 0)
 		else
-			pan.setPosition(1, 0, 0)
+			pan.setPosition(-1, 0, 0)
 
 		audio.source.connect(pan)
-		pan.connect(volume)
-		volume.connect(audio.destination)
-
-		return audio
+		pan.connect(BN.AC.volume)
+		BN.AC.volume.connect(audio.destination)
 
 	createWave: (audio) ->
 		sin = audio.createOscillator()
@@ -220,6 +224,8 @@ BN =
 
 	volumeSet: () ->
 		BN.int_volume # Set the BN.AC volume to this value
+		console.log(BN.int_volume / 100)
+		BN.AC.volume.gain.value = BN.int_volume / 100
 
 $ () ->
 	BN.init()

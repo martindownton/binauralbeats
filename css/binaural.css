@@ -415,6 +415,16 @@ body {
   text-align: center;
 }
 
+a {
+  border-bottom: 2px dotted #5a88a0;
+  color: #EEE;
+  text-decoration: none;
+}
+a:hover {
+  border-bottom: 2px solid #d3d2d0;
+  color: #5a88a0;
+}
+
 em {
   border-bottom: 2px dotted #444;
 }
@@ -495,6 +505,7 @@ em {
 }
 
 #ctl_startstop {
+  border: 0;
   display: block;
   float: left;
   font-size: 70px;
@@ -535,6 +546,7 @@ em {
 }
 
 #examples {
+  color: #444444;
   display: block;
   float: left;
   margin: 0 0 0 2%;
@@ -566,7 +578,7 @@ em {
 }
 .instructions li {
   min-height: 90px;
-  padding: 10px 0 0;
+  padding: 0;
   position: relative;
 }
 .instructions li .fa:before {
@@ -574,7 +586,8 @@ em {
   font-size: 70px;
   left: -100px;
   line-height: 70px;
+  text-align: center;
   top: 0;
   position: absolute;
-  width: 100%;
+  width: 70px;
 }

@@ -36,6 +36,15 @@ body {
     font-family: 'Open Sans', sans-serif;
     text-align: center;
 }
+a {
+    border-bottom: 2px dotted $blue;
+    color: #EEE;
+    text-decoration: none;
+    &:hover {
+        border-bottom: 2px solid $txtcolor;
+        color: $blue;
+    }
+}
 em { border-bottom:2px dotted #444; }
 
 
@@ -114,6 +123,7 @@ em { border-bottom:2px dotted #444; }
     }
     #freq_right { text-align:left; margin:0; }
     #ctl_startstop {
+        border: 0;
         display: block;
         float: left;
         font-size: 70px;
@@ -151,6 +161,7 @@ em { border-bottom:2px dotted #444; }
     }
 
     #examples {
+        color: $greydark;
         display: block;
         float: left;
         margin: 0 0 0 2%;
@@ -183,7 +194,7 @@ em { border-bottom:2px dotted #444; }
 
         & li {
             min-height: 90px;
-            padding: 10px 0 0;
+            padding: 0;
             position:relative;
 
             & .fa:before {
@@ -191,9 +202,10 @@ em { border-bottom:2px dotted #444; }
                 font-size: 70px;
                 left: -100px;
                 line-height: 70px;
+                text-align: center;
                 top: 0;
                 position: absolute;
-                width: 100%;
+                width: 70px;
             }
         }
     }

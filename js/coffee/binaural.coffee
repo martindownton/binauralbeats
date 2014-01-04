@@ -38,7 +38,6 @@ BN =
 				#BN.demoAudio(220, 0.2)
 				BN.initInterface()
 				BN.initEvents()
-				BN.setupAudio()
 
 		catch exc
 			BN.nosupport(exc)
@@ -84,11 +83,6 @@ BN =
 					height: 37
 					width: 249
 				, config.anim_time)
-			###
-				.animate(
-					paddingRight: 0
-				, config.anim_time)
-			###
 		)
 
 		#CTL Volume
@@ -110,6 +104,7 @@ BN =
 		#CTL StartStop
 		BN.startstop.$el = $('#ctl_startstop')
 		BN.startstop.$el.click( (e) ->
+			e.preventDefault()
 			BN.startstopCTL()
 		)
 
@@ -121,18 +116,18 @@ BN =
 
 
 	volumeEvent: ($volume, int_offset_y) ->
-			int_offset 				= int_offset_y - $volume.offset().top
-			int_height_less_offset 	= BN.int_volume_max - int_offset
-			int_volume				= parseInt(int_height_less_offset / BN.int_volume_max * 100)
-			if (int_volume > 95)
-				int_volume = 100
-			int_volume = 5 * Math.round(int_volume / 5)
-			BN.int_volume = int_volume
+		int_offset 				= int_offset_y - $volume.offset().top
+		int_height_less_offset 	= BN.int_volume_max - int_offset
+		int_volume				= parseInt(int_height_less_offset / BN.int_volume_max * 100)
+		if (int_volume > 95)
+			int_volume = 100
+		int_volume = 5 * Math.round(int_volume / 5)
+		BN.int_volume = int_volume
 
-			int_volume_height = BN.int_volume_max * int_volume / 100
-			int_volume_offset = BN.int_volume_max - int_volume_height
-			BN.volumeRender(int_volume_offset, int_volume_height)
-			BN.volumeSet()
+		int_volume_height = BN.int_volume_max * int_volume / 100
+		int_volume_offset = BN.int_volume_max - int_volume_height
+		BN.volumeRender(int_volume_offset, int_volume_height)
+		BN.volumeSet()
 		
 	volumeRender: (int_volume_offset, int_volume_height) ->
 		console.log(BN.$volume)
@@ -144,8 +139,10 @@ BN =
 	startstopCTL: () ->
 		if (BN.startstop.$el.toggleClass('enabled').hasClass('enabled'))
 			console.log('on')
+			BN.actStartStop(true)
 		else
 			console.log('off')
+			BN.actStartStop()
 
 	presetCTL: () ->
 		console.log('presetClick')
@@ -178,13 +175,20 @@ BN =
 		BN.AC.right = BN.createSound(true)
 
 		#BN.AC.left.volume.gain.value = 0.1
-		BN.AC.left.source.noteOn(0)
-		BN.AC.left.source.noteOff(5)
 
 		#BN.AC.right.volume.gain.value = 0.1
 		BN.AC.right.source.frequency.value = 442
-		BN.AC.right.source.noteOn(0)
-		BN.AC.right.source.noteOff(5)
+
+	actStartStop: (bol_start) ->
+		if (bol_start)
+			BN.setupAudio()
+			BN.AC.left.source.noteOn(0)
+			BN.AC.right.source.noteOn(0)
+		else
+			BN.AC.left.source.noteOff(0)
+			BN.AC.left = null
+			BN.AC.right.source.noteOff(0)
+			BN.AC.right = null
 
 	createSound: (bol_right) ->
 		audio = new BN.AudioContext()

@@ -32,8 +32,7 @@
         } else {
           BN.updateCompatibilityMessage(config.msg_compatible, 'compatible', true);
           BN.initInterface();
-          BN.initEvents();
-          return BN.setupAudio();
+          return BN.initEvents();
         }
       } catch (_error) {
         exc = _error;
@@ -77,12 +76,6 @@
           height: 37,
           width: 249
         }, config.anim_time);
-        /*
-        				.animate(
-        					paddingRight: 0
-        				, config.anim_time)
-        */
-
       });
       BN.$volume = $('#volume');
       BN.int_volume_max = BN.$volume.height();
@@ -98,6 +91,7 @@
       });
       BN.startstop.$el = $('#ctl_startstop');
       BN.startstop.$el.click(function(e) {
+        e.preventDefault();
         return BN.startstopCTL();
       });
       BN.preset.$container = $('#examples');
@@ -129,9 +123,11 @@
     },
     startstopCTL: function() {
       if (BN.startstop.$el.toggleClass('enabled').hasClass('enabled')) {
-        return console.log('on');
+        console.log('on');
+        return BN.actStartStop(true);
       } else {
-        return console.log('off');
+        console.log('off');
+        return BN.actStartStop();
       }
     },
     presetCTL: function() {
@@ -159,11 +155,19 @@
     setupAudio: function() {
       BN.AC.left = BN.createSound();
       BN.AC.right = BN.createSound(true);
-      BN.AC.left.source.noteOn(0);
-      BN.AC.left.source.noteOff(5);
-      BN.AC.right.source.frequency.value = 442;
-      BN.AC.right.source.noteOn(0);
-      return BN.AC.right.source.noteOff(5);
+      return BN.AC.right.source.frequency.value = 442;
+    },
+    actStartStop: function(bol_start) {
+      if (bol_start) {
+        BN.setupAudio();
+        BN.AC.left.source.noteOn(0);
+        return BN.AC.right.source.noteOn(0);
+      } else {
+        BN.AC.left.source.noteOff(0);
+        BN.AC.left = null;
+        BN.AC.right.source.noteOff(0);
+        return BN.AC.right = null;
+      }
     },
     createSound: function(bol_right) {
       var audio, pan, sin, volume;

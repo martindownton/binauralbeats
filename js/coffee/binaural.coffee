@@ -178,6 +178,12 @@ BN =
 		BN.createSound(BN.left)
 		BN.createSound(BN.right, true)
 
+		BN.left.volume.gain.value = BN.flt_volume_init
+		BN.right.volume.gain.value = BN.flt_volume_init
+
+		BN.left.pan.setPosition(-1, 0, 0)
+		BN.right.pan.setPosition(1, 0, 0)
+
 		BN.right.AC.source.frequency.value = 442
 
 	actStartStop: (bol_start) ->
@@ -194,19 +200,14 @@ BN =
 
 	createSound: (audio, bol_right) ->
 		audio.volume = audio.AC.createGain()
-		audio.volume.gain.value = BN.flt_volume_init
 
 		sin = BN.createWave(audio.AC)
 		audio.AC.source = sin
 
-		pan = audio.AC.createPanner()
-		if (!bol_right)
-			pan.setPosition(-1, 0, 0)
-		else
-			pan.setPosition(-1, 0, 0)
+		audio.pan = audio.AC.createPanner()
 
-		audio.AC.source.connect(pan)
-		pan.connect(audio.volume)
+		audio.pan.connect(audio.volume)
+		audio.AC.source.connect(audio.pan)
 		audio.volume.connect(audio.AC.destination)
 
 	createWave: (audio) ->

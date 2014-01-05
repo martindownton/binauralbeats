@@ -132,6 +132,23 @@ em { border-bottom:2px dotted #444; }
         position: relative;
         width: 20%;
 
+        &:after {
+            border-radius: 35px;
+            box-shadow: 0px 0 5px 5px $grey;
+            content: " ";
+            display: block;
+            height: 58px;
+            top: 11px;
+            width: 58px;
+            margin: 0 auto;
+            position: relative;
+            opacity: 0;
+            transition: opacity 0.2s;
+        }
+        &.highlight:after {
+            opacity: 1;
+        }
+
         &:before {
             color: $greydark;
             content: "\f01d";
@@ -178,6 +195,24 @@ em { border-bottom:2px dotted #444; }
         a {
             color: $grey;
             font-size: 16px;
+        }
+
+        &:after {
+            content: " ";
+            box-shadow: 0px 0 5px 5px #999999;
+            width: 464px;
+            margin-left: -232px;
+            height: 23px;
+            position: absolute;
+            left: 50%;
+            bottom: 10px;
+            border-radius: 8px;
+            opacity: 0;
+            transition: opacity 0.2s;
+            pointer-events: none;
+        }
+        &.highlight:after {
+            opacity: 1;
         }
     }
 

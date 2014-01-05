@@ -514,6 +514,22 @@ em {
   position: relative;
   width: 20%;
 }
+#ctl_startstop:after {
+  border-radius: 35px;
+  box-shadow: 0px 0 5px 5px #999999;
+  content: " ";
+  display: block;
+  height: 58px;
+  top: 11px;
+  width: 58px;
+  margin: 0 auto;
+  position: relative;
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+#ctl_startstop.highlight:after {
+  opacity: 1;
+}
 #ctl_startstop:before {
   color: #444444;
   content: "\f01d";
@@ -564,6 +580,23 @@ em {
 #examples a {
   color: #999999;
   font-size: 16px;
+}
+#examples:after {
+  content: " ";
+  box-shadow: 0px 0 5px 5px #999999;
+  width: 464px;
+  margin-left: -232px;
+  height: 23px;
+  position: absolute;
+  left: 50%;
+  bottom: 10px;
+  border-radius: 8px;
+  opacity: 0;
+  transition: opacity 0.2s;
+  pointer-events: none;
+}
+#examples.highlight:after {
+  opacity: 1;
 }
 
 .content {

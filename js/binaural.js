@@ -6,7 +6,8 @@
     freq_init_variance: 2,
     anim_time: 400,
     msg_compatible: "Your Browser is Compatiable with the Webaudio API",
-    msg_incompatible: "Your Browser is Not Compatiable with the Webaudio API"
+    msg_incompatible: "Your Browser is Not Compatiable with the Webaudio API",
+    str_freq_append: "<sup>hz</sup>"
   };
 
   BN = {
@@ -90,6 +91,7 @@
         top: BN.int_volume_max * (1 - BN.flt_volume_init)
       }, config.anim_time);
       BN.$volume.click(function(e) {
+        e.preventDefault();
         return BN.volumeEvent($(this), e.pageY);
       });
       BN.startstop.$el = $('#ctl_startstop');
@@ -98,8 +100,23 @@
         return BN.startstopCTL();
       });
       BN.preset.$container = $('#examples');
-      return BN.preset.$container.find('li a').click(function(e) {
-        return BN.presetCTL();
+      BN.preset.$container.find('li a').click(function(e) {
+        e.preventDefault();
+        return BN.presetCTL(this);
+      });
+      $('#highlight_play').hover(function() {
+        return $('#ctl_startstop').addClass('highlight');
+      }, function() {
+        return $('#ctl_startstop').removeClass('highlight');
+      }).click(function(e) {
+        return e.preventDefault();
+      });
+      return $('#highlight_examples').hover(function() {
+        return $('#examples').addClass('highlight');
+      }, function() {
+        return $('#examples').removeClass('highlight');
+      }).click(function(e) {
+        return e.preventDefault();
       });
     },
     volumeEvent: function($volume, int_offset_y) {
@@ -115,7 +132,7 @@
       int_volume_height = BN.int_volume_max * int_volume / 100;
       int_volume_offset = BN.int_volume_max - int_volume_height;
       BN.volumeRender(int_volume_offset, int_volume_height);
-      return BN.volumeSet();
+      return BN.actVolumeSet();
     },
     volumeRender: function(int_volume_offset, int_volume_height) {
       return BN.$volume.find('.indicator').animate({
@@ -130,8 +147,9 @@
         return BN.actStartStop();
       }
     },
-    presetCTL: function() {
-      return console.log('presetClick');
+    presetCTL: function($freq) {
+      console.log($freq.dataset['freq']);
+      return BN.actFrequencySet($freq.dataset['freq']);
     },
     /* Audio Context*/
 
@@ -165,18 +183,6 @@
       BN.right.pan.setPosition(1, 0, 0);
       return BN.right.AC.source.frequency.value = 442;
     },
-    actStartStop: function(bol_start) {
-      if (bol_start) {
-        BN.setupAudio();
-        BN.left.AC.source.noteOn(0);
-        return BN.right.AC.source.noteOn(0);
-      } else {
-        BN.left.AC.source.noteOff(0);
-        BN.left.AC.source.disconnect();
-        BN.right.AC.source.noteOff(0);
-        return BN.right.AC.source.disconnect();
-      }
-    },
     createSound: function(audio, bol_right) {
       var sin;
       audio.volume = audio.AC.createGain();
@@ -194,9 +200,27 @@
       sin.frequency.value = config.freq_fundamental;
       return sin;
     },
-    volumeSet: function() {
+    /* Actions*/
+
+    actStartStop: function(bol_start) {
+      if (bol_start) {
+        BN.setupAudio();
+        BN.left.AC.source.noteOn(0);
+        return BN.right.AC.source.noteOn(0);
+      } else {
+        BN.left.AC.source.noteOff(0);
+        BN.left.AC.source.disconnect();
+        BN.right.AC.source.noteOff(0);
+        return BN.right.AC.source.disconnect();
+      }
+    },
+    actVolumeSet: function() {
       BN.left.volume.gain.value = BN.int_volume / 100;
       return BN.right.volume.gain.value = BN.int_volume / 100;
+    },
+    actFrequencySet: function(int_frequency) {
+      BN.right.AC.source.frequency.value = int_frequency;
+      return $('#freq_right').html(int_frequency + config.str_freq_append);
     }
   };
 

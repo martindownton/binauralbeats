@@ -7,6 +7,8 @@ config =
 	msg_compatible:		"Your Browser is Compatiable with the Webaudio API"
 	msg_incompatible:	"Your Browser is Not Compatiable with the Webaudio API"
 
+	str_freq_append:	"<sup>hz</sup>"
+
 BN =
 	$title:				null
 	obj_audio:			null	# Dep?
@@ -101,6 +103,7 @@ BN =
 			top: BN.int_volume_max * (1 - BN.flt_volume_init)
 		, config.anim_time)
 		BN.$volume.click( (e) ->
+			e.preventDefault()
 			BN.volumeEvent($(this), e.pageY)
 		)
 
@@ -114,7 +117,27 @@ BN =
 		#CTL Frequency
 		BN.preset.$container = $('#examples')
 		BN.preset.$container.find('li a').click( (e) ->
-			BN.presetCTL()
+			e.preventDefault()
+			BN.presetCTL(this)
+		)
+
+		#Highlight
+		$('#highlight_play').hover(() ->
+			$('#ctl_startstop').addClass('highlight')
+		, () ->
+			$('#ctl_startstop').removeClass('highlight')
+		)
+		.click((e) ->
+			e.preventDefault()
+		)
+
+		$('#highlight_examples').hover(() ->
+			$('#examples').addClass('highlight')
+		, () ->
+			$('#examples').removeClass('highlight')
+		)
+		.click((e) ->
+			e.preventDefault()
 		)
 
 
@@ -130,7 +153,7 @@ BN =
 		int_volume_height = BN.int_volume_max * int_volume / 100
 		int_volume_offset = BN.int_volume_max - int_volume_height
 		BN.volumeRender(int_volume_offset, int_volume_height)
-		BN.volumeSet()
+		BN.actVolumeSet()
 		
 	volumeRender: (int_volume_offset, int_volume_height) ->
 		BN.$volume.find('.indicator').animate(
@@ -144,8 +167,9 @@ BN =
 		else
 			BN.actStartStop()
 
-	presetCTL: () ->
-		console.log('presetClick')
+	presetCTL: ($freq) ->
+		console.log($freq.dataset['freq'])
+		BN.actFrequencySet($freq.dataset['freq'])
 
 	### Audio Context ###
 
@@ -186,18 +210,6 @@ BN =
 
 		BN.right.AC.source.frequency.value = 442
 
-	actStartStop: (bol_start) ->
-		if (bol_start)
-			BN.setupAudio()
-			BN.left.AC.source.noteOn(0)
-			BN.right.AC.source.noteOn(0)
-		else
-			BN.left.AC.source.noteOff(0)
-			BN.left.AC.source.disconnect()
-
-			BN.right.AC.source.noteOff(0)
-			BN.right.AC.source.disconnect()
-
 	createSound: (audio, bol_right) ->
 		audio.volume = audio.AC.createGain()
 
@@ -217,9 +229,27 @@ BN =
 
 		return sin
 
-	volumeSet: () ->
+	### Actions ###
+
+	actStartStop: (bol_start) ->
+		if (bol_start)
+			BN.setupAudio()
+			BN.left.AC.source.noteOn(0)
+			BN.right.AC.source.noteOn(0)
+		else
+			BN.left.AC.source.noteOff(0)
+			BN.left.AC.source.disconnect()
+
+			BN.right.AC.source.noteOff(0)
+			BN.right.AC.source.disconnect()
+
+	actVolumeSet: () ->
 		BN.left.volume.gain.value = BN.int_volume / 100
 		BN.right.volume.gain.value = BN.int_volume / 100
+
+	actFrequencySet: (int_frequency) ->
+		BN.right.AC.source.frequency.value = int_frequency
+		$('#freq_right').html(int_frequency + config.str_freq_append)
 
 $ () ->
 	BN.init()

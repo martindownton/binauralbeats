@@ -14,7 +14,10 @@
     obj_audio: null,
     obj_message: null,
     int_volume: null,
+    flt_volume_init: 0.5,
     AC: {},
+    left: {},
+    right: {},
     startstop: {
       $el: null,
       state: false,
@@ -83,8 +86,8 @@
         height: 0,
         top: BN.int_volume_max
       }).animate({
-        height: BN.int_volume_max * 0.8,
-        top: BN.int_volume_max * 0.2
+        height: BN.int_volume_max * BN.flt_volume_init,
+        top: BN.int_volume_max * (1 - BN.flt_volume_init)
       }, config.anim_time);
       BN.$volume.click(function(e) {
         return BN.volumeEvent($(this), e.pageY);
@@ -115,7 +118,6 @@
       return BN.volumeSet();
     },
     volumeRender: function(int_volume_offset, int_volume_height) {
-      console.log(BN.$volume);
       return BN.$volume.find('.indicator').animate({
         height: int_volume_height,
         top: int_volume_offset
@@ -123,10 +125,8 @@
     },
     startstopCTL: function() {
       if (BN.startstop.$el.toggleClass('enabled').hasClass('enabled')) {
-        console.log('on');
         return BN.actStartStop(true);
       } else {
-        console.log('off');
         return BN.actStartStop();
       }
     },
@@ -153,44 +153,41 @@
       return console.log('Demo!');
     },
     setupAudio: function() {
-      console.log(BN.AC.left);
-      if (BN.AC.left === void 0) {
-        console.log('match');
-        BN.AC.left = new BN.AudioContext();
-        BN.AC.right = new BN.AudioContext();
+      if (BN.left.AC === void 0) {
+        BN.left.AC = new BN.AudioContext();
+        BN.right.AC = new BN.AudioContext();
       }
-      BN.createSound(BN.AC.left);
-      BN.createSound(BN.AC.right, true);
-      BN.AC.volume.gain.value = 0.1;
-      return BN.AC.right.source.frequency.value = 442;
+      BN.createSound(BN.left);
+      BN.createSound(BN.right, true);
+      return BN.right.AC.source.frequency.value = 442;
     },
     actStartStop: function(bol_start) {
       if (bol_start) {
         BN.setupAudio();
-        BN.AC.left.source.noteOn(0);
-        return BN.AC.right.source.noteOn(0);
+        BN.left.AC.source.noteOn(0);
+        return BN.right.AC.source.noteOn(0);
       } else {
-        BN.AC.left.source.noteOff(0);
-        BN.AC.left.source.disconnect();
-        BN.AC.right.source.noteOff(0);
-        return BN.AC.right.source.disconnect();
+        BN.left.AC.source.noteOff(0);
+        BN.left.AC.source.disconnect();
+        BN.right.AC.source.noteOff(0);
+        return BN.right.AC.source.disconnect();
       }
     },
     createSound: function(audio, bol_right) {
       var pan, sin;
-      BN.AC.volume = audio.createGain();
-      BN.AC.volume.gain.value = 0.5;
-      sin = BN.createWave(audio);
-      audio.source = sin;
-      pan = audio.createPanner();
+      audio.volume = audio.AC.createGain();
+      audio.volume.gain.value = BN.flt_volume_init;
+      sin = BN.createWave(audio.AC);
+      audio.AC.source = sin;
+      pan = audio.AC.createPanner();
       if (!bol_right) {
         pan.setPosition(-1, 0, 0);
       } else {
         pan.setPosition(-1, 0, 0);
       }
-      audio.source.connect(pan);
-      pan.connect(BN.AC.volume);
-      return BN.AC.volume.connect(audio.destination);
+      audio.AC.source.connect(pan);
+      pan.connect(audio.volume);
+      return audio.volume.connect(audio.AC.destination);
     },
     createWave: function(audio) {
       var sin;
@@ -200,9 +197,8 @@
       return sin;
     },
     volumeSet: function() {
-      BN.int_volume;
-      console.log(BN.int_volume / 100);
-      return BN.AC.volume.gain.value = BN.int_volume / 100;
+      BN.left.volume.gain.value = BN.int_volume / 100;
+      return BN.right.volume.gain.value = BN.int_volume / 100;
     }
   };
 

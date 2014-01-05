@@ -8,12 +8,15 @@ config =
 	msg_incompatible:	"Your Browser is Not Compatiable with the Webaudio API"
 
 BN =
-	$title:			null
-	obj_audio:		null	# Dep?
-	obj_message:	null
-	int_volume:		null
+	$title:				null
+	obj_audio:			null	# Dep?
+	obj_message:		null
+	int_volume:			null
+	flt_volume_init:	0.5
 
-	AC:				{}		# Wrapper for audio context objects
+	AC:					{}		# Wrapper for audio context objects
+	left:				{}		# LEFT Wrapper for audio context objects
+	right:				{}		# RIGHT Wrapper for audio context objects
 
 	startstop:
 		$el: null
@@ -94,8 +97,8 @@ BN =
 			top: BN.int_volume_max
 		)
 		.animate(
-			height: BN.int_volume_max * 0.8
-			top: BN.int_volume_max * 0.2
+			height: BN.int_volume_max * BN.flt_volume_init
+			top: BN.int_volume_max * (1 - BN.flt_volume_init)
 		, config.anim_time)
 		BN.$volume.click( (e) ->
 			BN.volumeEvent($(this), e.pageY)
@@ -130,7 +133,6 @@ BN =
 		BN.volumeSet()
 		
 	volumeRender: (int_volume_offset, int_volume_height) ->
-		console.log(BN.$volume)
 		BN.$volume.find('.indicator').animate(
 			height:	int_volume_height
 			top:	int_volume_offset
@@ -138,10 +140,8 @@ BN =
 
 	startstopCTL: () ->
 		if (BN.startstop.$el.toggleClass('enabled').hasClass('enabled'))
-			console.log('on')
 			BN.actStartStop(true)
 		else
-			console.log('off')
 			BN.actStartStop()
 
 	presetCTL: () ->
@@ -171,49 +171,43 @@ BN =
 		console.log('Demo!')
 
 	setupAudio: () ->
-		console.log(BN.AC.left)
-		if (BN.AC.left == undefined)
-			console.log('match')
-			BN.AC.left = new BN.AudioContext()
-			BN.AC.right = new BN.AudioContext()
+		if (BN.left.AC == undefined)
+			BN.left.AC = new BN.AudioContext()
+			BN.right.AC = new BN.AudioContext()
 
-		BN.createSound(BN.AC.left)
-		BN.createSound(BN.AC.right, true)
+		BN.createSound(BN.left)
+		BN.createSound(BN.right, true)
 
-		#BN.AC.left.volume.gain.value = 0.1
-		BN.AC.volume.gain.value = 0.1
-
-		#BN.AC.right.volume.gain.value = 0.1
-		BN.AC.right.source.frequency.value = 442
+		BN.right.AC.source.frequency.value = 442
 
 	actStartStop: (bol_start) ->
 		if (bol_start)
 			BN.setupAudio()
-			BN.AC.left.source.noteOn(0)
-			BN.AC.right.source.noteOn(0)
+			BN.left.AC.source.noteOn(0)
+			BN.right.AC.source.noteOn(0)
 		else
-			BN.AC.left.source.noteOff(0)
-			BN.AC.left.source.disconnect()
+			BN.left.AC.source.noteOff(0)
+			BN.left.AC.source.disconnect()
 
-			BN.AC.right.source.noteOff(0)
-			BN.AC.right.source.disconnect()
+			BN.right.AC.source.noteOff(0)
+			BN.right.AC.source.disconnect()
 
 	createSound: (audio, bol_right) ->
-		BN.AC.volume = audio.createGain()
-		BN.AC.volume.gain.value = 0.5
+		audio.volume = audio.AC.createGain()
+		audio.volume.gain.value = BN.flt_volume_init
 
-		sin = BN.createWave(audio)
-		audio.source = sin
+		sin = BN.createWave(audio.AC)
+		audio.AC.source = sin
 
-		pan = audio.createPanner()
+		pan = audio.AC.createPanner()
 		if (!bol_right)
 			pan.setPosition(-1, 0, 0)
 		else
 			pan.setPosition(-1, 0, 0)
 
-		audio.source.connect(pan)
-		pan.connect(BN.AC.volume)
-		BN.AC.volume.connect(audio.destination)
+		audio.AC.source.connect(pan)
+		pan.connect(audio.volume)
+		audio.volume.connect(audio.AC.destination)
 
 	createWave: (audio) ->
 		sin = audio.createOscillator()
@@ -223,9 +217,8 @@ BN =
 		return sin
 
 	volumeSet: () ->
-		BN.int_volume # Set the BN.AC volume to this value
-		console.log(BN.int_volume / 100)
-		BN.AC.volume.gain.value = BN.int_volume / 100
+		BN.left.volume.gain.value = BN.int_volume / 100
+		BN.right.volume.gain.value = BN.int_volume / 100
 
 $ () ->
 	BN.init()

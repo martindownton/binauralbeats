@@ -144,10 +144,11 @@ em { border-bottom:2px dotted #444; }
             content: "\f04d"
         }
     }
-    #volume {
+    /*a*/ #volume {
         @include volume-common();
         background-image: url(../images/volume.png);
         background-repeat: repeat-y;
+        border: 0;
         float: right;
         max-width: 15px;
         position: relative;
@@ -176,6 +177,7 @@ em { border-bottom:2px dotted #444; }
         }
         a {
             color: $grey;
+            font-size: 16px;
         }
     }
 

@@ -526,11 +526,13 @@ em {
   content: "\f04d";
 }
 
+/*a*/
 #volume {
   height: 120px;
   margin: 0;
   background-image: url(../images/volume.png);
   background-repeat: repeat-y;
+  border: 0;
   float: right;
   max-width: 15px;
   position: relative;
@@ -561,6 +563,7 @@ em {
 }
 #examples a {
   color: #999999;
+  font-size: 16px;
 }
 
 .content {
